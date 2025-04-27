@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operations - User Management</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>User Management</h1>
+
+    <!-- Form to create or update user -->
+    <div>
+        <h2>Create or Update User</h2>
+        <form id="user-form">
+            <input type="text" id="user-name" placeholder="User Name" required>
+            <input type="email" id="user-email" placeholder="Email" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- List of users -->
+    <div>
+        <h2>Users</h2>
+        <ul id="user-list"></ul>
+    </div>
+</div>
+
+<script type="module" src="../js/script.js"></script>
+</body>
+</html>
