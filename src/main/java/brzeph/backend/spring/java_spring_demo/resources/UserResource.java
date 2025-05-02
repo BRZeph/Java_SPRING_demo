@@ -18,7 +18,7 @@ public class UserResource {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){ // Controlador rest que responde http Users
+    public ResponseEntity<List<User>> findAll(){
         List<User> users = service.findAll();
         return ResponseEntity.ok().body(users);
     }
