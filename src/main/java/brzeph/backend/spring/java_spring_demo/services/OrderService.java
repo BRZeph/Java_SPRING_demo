@@ -1,6 +1,6 @@
 package brzeph.backend.spring.java_spring_demo.services;
 
-import brzeph.backend.spring.java_spring_demo.entities.Order;
+import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
 import brzeph.backend.spring.java_spring_demo.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

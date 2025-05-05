@@ -1,4 +1,4 @@
-package brzeph.backend.spring.java_spring_demo.resources.exceptions;
+package brzeph.backend.spring.java_spring_demo.exceptions;
 
 import brzeph.backend.spring.java_spring_demo.services.exceptions.DatabaseException;
 import brzeph.backend.spring.java_spring_demo.services.exceptions.ResourceNotFoundException;

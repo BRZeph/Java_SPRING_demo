@@ -1,9 +1,11 @@
-package brzeph.backend.spring.java_spring_demo.entities;
+package brzeph.backend.spring.java_spring_demo.entities.orders;
 
-import brzeph.backend.spring.java_spring_demo.entities.enums.OrderStatus;
+import brzeph.backend.spring.java_spring_demo.entities.users.User;
+import brzeph.backend.spring.java_spring_demo.entities.orders.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @jakarta.persistence.Id

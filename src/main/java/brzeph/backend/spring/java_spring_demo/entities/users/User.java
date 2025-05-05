@@ -1,8 +1,10 @@
-package brzeph.backend.spring.java_spring_demo.entities;
+package brzeph.backend.spring.java_spring_demo.entities.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import brzeph.backend.spring.java_spring_demo.entities.audit.AuditLog;
+import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
 import jakarta.persistence.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_users")
 public class User implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -21,9 +24,11 @@ public class User implements Serializable {
     private String password;
     private String phone;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<AuditLog> auditLogs = new ArrayList<>();
 
     public User(){
     }
@@ -42,7 +47,7 @@ public class User implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + "[PROTECTED]" + '\'' +
                 '}';
     }
 
@@ -100,5 +105,9 @@ public class User implements Serializable {
 
     public List<Order> getOrders() {
         return orders;
+    }
+
+    public List<AuditLog> getAuditLogs() {
+        return auditLogs;
     }
 }

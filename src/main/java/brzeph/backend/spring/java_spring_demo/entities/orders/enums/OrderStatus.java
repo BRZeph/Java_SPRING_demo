@@ -1,4 +1,4 @@
-package brzeph.backend.spring.java_spring_demo.entities.enums;
+package brzeph.backend.spring.java_spring_demo.entities.orders.enums;
 
 public enum OrderStatus {
 

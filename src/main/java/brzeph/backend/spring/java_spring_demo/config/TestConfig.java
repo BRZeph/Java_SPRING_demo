@@ -1,7 +1,12 @@
 package brzeph.backend.spring.java_spring_demo.config;
 
-import brzeph.backend.spring.java_spring_demo.entities.*;
-import brzeph.backend.spring.java_spring_demo.entities.enums.OrderStatus;
+import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
+import brzeph.backend.spring.java_spring_demo.entities.orders.OrderItem;
+import brzeph.backend.spring.java_spring_demo.entities.orders.Payment;
+import brzeph.backend.spring.java_spring_demo.entities.orders.enums.OrderStatus;
+import brzeph.backend.spring.java_spring_demo.entities.products.ProductCategory;
+import brzeph.backend.spring.java_spring_demo.entities.products.Product;
+import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import brzeph.backend.spring.java_spring_demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -33,14 +38,14 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User user1 = new User(null, "Alice Souza", "alice.souza@example.com", "senha123", "5511987654321");
+        User user1 = new User(null, "Alice Souza", "alice.souza@example.com", "dadoSeguroNãoVazar", "5511987654321");
         User user2 = new User(null, "Bruno Lima", "bruno.lima@example.com", "senha123", "5511976543210");
         User user3 = new User(null, "Carla Mendes", "carla.mendes@example.com", "senha123", "5511965432109");
         userRepository.saveAll(Arrays.asList(user1, user2, user3));
 
-        Category cat1 = new Category(null, "Livros");
-        Category cat2 = new Category(null, "Eletrônicos");
-        Category cat3 = new Category(null, "Casa & Cozinha");
+        ProductCategory cat1 = new ProductCategory(null, "Livros");
+        ProductCategory cat2 = new ProductCategory(null, "Eletrônicos");
+        ProductCategory cat3 = new ProductCategory(null, "Casa & Cozinha");
         categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 
         Product p1 = new Product(null, "Notebook Dell XPS 13", "Notebook ultrafino de alta performance", 8999.90, "https://example.com/xps13");

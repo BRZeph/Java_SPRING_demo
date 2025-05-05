@@ -1,7 +1,7 @@
-package brzeph.backend.spring.java_spring_demo.entities.pk;
+package brzeph.backend.spring.java_spring_demo.entities.orders.pk;
 
-import brzeph.backend.spring.java_spring_demo.entities.Order;
-import brzeph.backend.spring.java_spring_demo.entities.Product;
+import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
+import brzeph.backend.spring.java_spring_demo.entities.products.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;

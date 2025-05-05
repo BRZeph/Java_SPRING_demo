@@ -1,53 +1,52 @@
-package brzeph.backend.spring.java_spring_demo.entities;
+package brzeph.backend.spring.java_spring_demo.entities.permissions;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable {
+@Table(name = "tb_permissionsGroup")
+public class PermissionGroup implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String description;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "categories") // mesmo nome do Set: private Set<Category> categories = new HashSet<>();
-    private Set<Product> products = new HashSet<>();
-
-    public Category() {
+    public PermissionGroup() {
     }
 
-    public Category(Long id, String name) {
+    public PermissionGroup(Long id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "PermissionGroup{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return Objects.equals(id, category.id) && Objects.equals(name, category.name);
+        PermissionGroup that = (PermissionGroup) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hashCode(id);
     }
 
     public Long getId() {
@@ -66,7 +65,11 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

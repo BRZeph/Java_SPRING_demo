@@ -1,6 +1,6 @@
 package brzeph.backend.spring.java_spring_demo.services;
 
-import brzeph.backend.spring.java_spring_demo.entities.Category;
+import brzeph.backend.spring.java_spring_demo.entities.products.ProductCategory;
 import brzeph.backend.spring.java_spring_demo.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
-    public List<Category> findAll(){
+    public List<ProductCategory> findAll(){
         return repository.findAll();
     }
 
-    public Category findById(Long id){
-        Optional<Category> user = repository.findById(id);
+    public ProductCategory findById(Long id){
+        Optional<ProductCategory> user = repository.findById(id);
         return user.get();
     }
 }

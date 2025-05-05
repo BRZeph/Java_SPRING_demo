@@ -1,8 +1,11 @@
-package brzeph.backend.spring.java_spring_demo.entities;
+package brzeph.backend.spring.java_spring_demo.entities.products;
 
+import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
+import brzeph.backend.spring.java_spring_demo.entities.orders.OrderItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,7 +30,7 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories = new HashSet<>();
+    private Set<ProductCategory> categories = new HashSet<>();
 
     @OneToMany(mappedBy = "id.product")
     private Set<OrderItem> items = new HashSet<>();
@@ -114,7 +118,7 @@ public class Product implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public Set<Category> getCategories() {
+    public Set<ProductCategory> getCategories() {
         return categories;
     }
 }

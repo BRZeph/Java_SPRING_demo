@@ -1,7 +1,7 @@
 package brzeph.backend.spring.java_spring_demo.services;
 
 import brzeph.backend.spring.java_spring_demo.repositories.ProductRepository;
-import brzeph.backend.spring.java_spring_demo.entities.Product;
+import brzeph.backend.spring.java_spring_demo.entities.products.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

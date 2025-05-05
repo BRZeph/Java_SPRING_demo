@@ -1,4 +1,4 @@
-package brzeph.backend.spring.java_spring_demo.resources.exceptions;
+package brzeph.backend.spring.java_spring_demo.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
