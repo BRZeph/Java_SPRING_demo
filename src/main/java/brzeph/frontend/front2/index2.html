@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login / Register</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; }
+        input, button { display: block; margin: 10px 0; padding: 10px; width: 100%; }
+        .response { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+<h2>Register</h2>
+<input type="text" id="reg-username" placeholder="Username">
+<input type="password" id="reg-password" placeholder="Password">
+<button onclick="register()">Register</button>
+
+<h2>Login</h2>
+<input type="text" id="login-username" placeholder="Username">
+<input type="password" id="login-password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<h2>Test Protected API</h2>
+<input type="text" id="user-create-username" placeholder="New user name to create">
+<button onclick="createUser()">Create User</button>
+
+<div class="response" id="responseBox"></div>
+
+<script>
+    const API_URL = 'http://localhost:8080/api';
+
+    function showResponse(data) {
+        document.getElementById("responseBox").innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function register() {
+        const username = document.getElementById("reg-username").value;
+        const password = document.getElementById("reg-password").value;
+
+        const response = await fetch(`${API_URL}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+        showResponse(data);
+    }
+
+    async function login() {
+        const username = document.getElementById("login-username").value;
+        const password = document.getElementById("login-password").value;
+
+        const response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (data.token) {
+            localStorage.setItem("jwt", data.token);
+            alert("Login successful!");
+        }
+        showResponse(data);
+    }
+
+    async function createUser() {
+        const token = localStorage.getItem("jwt");
+        const newUserName = document.getElementById("user-create-username").value;
+
+        const response = await fetch(`${API_URL}/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ username: newUserName, password: 'defaultPassword' })
+        });
+
+        const data = await response.json();
+        showResponse(data);
+    }
+</script>
+</body>
+</html>
