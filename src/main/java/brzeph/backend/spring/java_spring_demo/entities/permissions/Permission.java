@@ -15,6 +15,7 @@ public class Permission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, unique = true)
     private String name;
     private String description;
 
@@ -28,20 +29,10 @@ public class Permission implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Permission{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Permission that = (Permission) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
     }
 
     @Override

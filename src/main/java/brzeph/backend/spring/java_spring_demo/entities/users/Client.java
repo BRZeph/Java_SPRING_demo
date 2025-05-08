@@ -1,21 +1,20 @@
 package brzeph.backend.spring.java_spring_demo.entities.users;
 
-import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
-import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_users")
-public class User implements Serializable {
+@Table(name = "tb_clients")
+public class Client implements Serializable {
     /*
-    tb_users → Middle client (will manage the app)
-    tb_clients → Final client (will access the app to buy/etc)
+    tb_user → Admins, Vendors
+    tb_client → People who sign up to buy/sell
+    */
+    /*
+    role == RoleSeed.CLIENT;
      */
     @Serial
     private static final long serialVersionUID = 1L;
@@ -24,31 +23,22 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
     private String email;
     private String password;
     private String phone;
 
-    @OneToMany(mappedBy = "client")
-    private List<Order> orders = new ArrayList<>();
+//    @OneToMany(mappedBy = "client")
+//    private List<Order> orders = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<AuditLog> auditLogs = new ArrayList<>();
 
-    public Role getRole() {
-        return role;
+    public Client() {
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public User(){
-    }
-
-    public User(Long id, String name, String email, String password, String phone, Role role) {
+    public Client(Long id, String name, String email, String password, String phone) {
         this.id = id;
         this.name = name;
-        this.role = role;
         this.email = email;
         this.password = password;
         this.phone = phone;
@@ -67,8 +57,8 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        Client client = (Client) o;
+        return Objects.equals(id, client.id);
     }
 
     @Override
@@ -116,7 +106,4 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
 }

@@ -42,13 +42,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-/*
-TODO:
-1) create AuthServices and refactor this class.
-1.1- create DTO for auth (check last lines of this class).
-2) continue with roles implementation
- */
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         logger.info("Login attempt for username: {}", request.getUsername());

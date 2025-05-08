@@ -4,44 +4,46 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_permissionsGroup")
-public class PermissionGroup implements Serializable {
+@Table(name = "tb_role")
+public class Role implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, unique = true)
     private String name;
     private String description;
 
-    public PermissionGroup() {
+    @ManyToMany
+    @JoinTable(
+            name = "tb_role_permissions",
+            joinColumns = @JoinColumn(name = "tb_role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions = new HashSet<>();
+
+    public Role() {
     }
 
-    public PermissionGroup(Long id, String name, String description) {
+    public Role(Long id, String name, String description, Set<Permission> permissions) {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "PermissionGroup{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        this.permissions = permissions;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PermissionGroup that = (PermissionGroup) o;
-        return Objects.equals(id, that.id);
+        Role role = (Role) o;
+        return Objects.equals(id, role.id);
     }
 
     @Override
@@ -51,10 +53,6 @@ public class PermissionGroup implements Serializable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -71,5 +69,9 @@ public class PermissionGroup implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 }

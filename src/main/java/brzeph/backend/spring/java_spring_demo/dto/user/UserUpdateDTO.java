@@ -1,45 +1,53 @@
 package brzeph.backend.spring.java_spring_demo.dto.user;
 
+import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserUpdateDTO {
 
+    private Long id;
     private String name;
+    private Role role;
     private String email;
-    private String phone;
     private String password;
+    private String phone;
+    private List<Order> orders = new ArrayList<>();
 
     public UserUpdateDTO() {
     }
 
-    public UserUpdateDTO(String name, String email, String phone, String password) {
+    public UserUpdateDTO(Long id, String name, Role role, String email, String password, String phone, List<Order> orders) {
+        this.id = id;
         this.name = name;
+        this.role = role;
         this.email = email;
-        this.phone = phone;
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "UserUpdateDTO{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        this.phone = phone;
+        this.orders = orders;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserUpdateDTO that = (UserUpdateDTO) o;
-        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(password, that.password);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, phone, password);
+        return Objects.hashCode(id);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,12 +58,28 @@ public class UserUpdateDTO {
         this.name = name;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -66,11 +90,11 @@ public class UserUpdateDTO {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

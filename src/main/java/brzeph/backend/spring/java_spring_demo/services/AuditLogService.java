@@ -6,6 +6,7 @@ import brzeph.backend.spring.java_spring_demo.repositories.AuditLogRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class AuditLogService {
@@ -19,5 +20,9 @@ public class AuditLogService {
     public void log(User user, String action, String metadata) {
         AuditLog log = new AuditLog(user, action, Instant.now(), metadata);
         auditLogRepository.save(log);
+    }
+
+    public List<AuditLog> getLogsForUser(User user) {
+        return auditLogRepository.findByUserTypeAndUserId("USER", user.getId());
     }
 }

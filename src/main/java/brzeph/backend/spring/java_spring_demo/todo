@@ -1,0 +1,15 @@
+TODO:
+
+1 (AuthController.class):
+1) create AuthServices and refactor this class.
+1.1- create DTO for auth (check last lines of this class).
+2) continue with roles implementation.
+
+2 (AuthController.class):
+1) move this (authRequest and registerRequest) to dto package.
+
+3:
+1) update user dto to handle permissions.
+
+4:
+1) move from H2 to mysql.

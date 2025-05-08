@@ -1,5 +1,6 @@
 package brzeph.backend.spring.java_spring_demo.entities.audit;
 
+import brzeph.backend.spring.java_spring_demo.entities.users.Client;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import jakarta.persistence.*;
 
@@ -17,9 +18,11 @@ public class AuditLog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_type", nullable = false, length = 50)
+    private String userType;
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(nullable = false, length = 100)
     private String action;
@@ -35,7 +38,16 @@ public class AuditLog implements Serializable {
     }
 
     public AuditLog(User user, String action, Instant timestamp, String metadata) {
-        this.user = user;
+        this.userType = "USER";
+        this.userId = Objects.isNull(user) ? Long.valueOf(-1) : user.getId();
+        this.action = action;
+        this.timestamp = timestamp;
+        this.metadata = metadata;
+    }
+
+    public AuditLog(Client client, String action, Instant timestamp, String metadata) {
+        this.userType = "CLIENT";
+        this.userId = client.getId();
         this.action = action;
         this.timestamp = timestamp;
         this.metadata = metadata;
@@ -45,7 +57,8 @@ public class AuditLog implements Serializable {
     public String toString() {
         return "AuditLog{" +
                 "id=" + id +
-                ", user=" + user +
+                ", userType=" + userType +
+                ", userId=" + userId +
                 ", action='" + action + '\'' +
                 ", timestamp=" + timestamp +
                 ", metadata='" + metadata + '\'' +
@@ -73,14 +86,6 @@ public class AuditLog implements Serializable {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getAction() {
         return action;
     }
@@ -103,5 +108,21 @@ public class AuditLog implements Serializable {
 
     public void setMetadata(String metadata) {
         this.metadata = metadata;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 }
