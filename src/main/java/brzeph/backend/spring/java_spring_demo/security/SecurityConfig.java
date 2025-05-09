@@ -30,11 +30,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/login", "/api/auth/register",
+                                "/api/auth/login", "/api/auth/register", "/api/auth/me",
                                 "/h2-console/**" //TODO: remove this line before going live.
                         ).permitAll()
                         .anyRequest().authenticated()
@@ -50,8 +51,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class.getName());
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

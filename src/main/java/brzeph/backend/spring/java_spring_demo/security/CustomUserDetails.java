@@ -16,45 +16,51 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
-    // Example: returns a single role for simplicity. Extend if needed.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-                new SimpleGrantedAuthority("ROLE_USER") // Replace or enhance with actual roles if needed
+                new SimpleGrantedAuthority("ROLE_USER")
         );
     }
 
     @Override
+    public String toString() {
+        return "CustomUserDetails{" +
+                "user=" + user +
+                '}';
+    }
+
+    @Override
     public String getPassword() {
-        return user.getPassword();  // assuming your User entity stores hashed password
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail(); // or user.getUsername() if you have such a field
+        return user.getName();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // customize this if your domain handles expiration
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // customize this if you track account locks
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // customize this if credentials can expire
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // you can add an `enabled` field to your User entity if needed
+        return true;
     }
 
     public User getUser() {
-        return user; // exposes the wrapped user entity if needed elsewhere
+        return user;
     }
 }

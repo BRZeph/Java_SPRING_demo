@@ -2,6 +2,8 @@ package brzeph.backend.spring.java_spring_demo.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,8 @@ public class JwtUtil {
 
     @Value("${jwt.secret}")
     private String SECRET_KEY; // TODO: change this to something more secure and do not upload api_key when going live.
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class.getName());
 
     public String generateToken(UserDetails userDetails) {
         return JWT.create()

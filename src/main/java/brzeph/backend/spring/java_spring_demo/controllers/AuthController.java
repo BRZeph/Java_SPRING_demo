@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;

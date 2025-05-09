@@ -22,8 +22,7 @@
 <button onclick="login()">Login</button>
 
 <h2>Test Protected API</h2>
-<input type="text" id="user-create-username" placeholder="New user name to create">
-<button onclick="createUser()">Create User</button>
+<button onclick="showUserData()">Create User</button>
 
 <div class="response" id="responseBox"></div>
 
@@ -51,31 +50,41 @@
         const username = document.getElementById("login-username").value;
         const password = document.getElementById("login-password").value;
 
-        const response = await fetch(`${API_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
+        try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-        const data = await response.json();
-        if (data.token) {
-            localStorage.setItem("jwt", data.token);
-            alert("Login successful!");
+            if (!response.ok) {
+                throw new Error(`Login failed with status ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(data);  // Log the response body
+
+            if (data.jwt) {
+                localStorage.setItem("jwt", data.jwt);
+            }
+
+            showResponse(data);
+        } catch (error) {
+            console.error('Login error:', error);
         }
-        showResponse(data);
     }
 
-    async function createUser() {
-        const token = localStorage.getItem("jwt");
-        const newUserName = document.getElementById("user-create-username").value;
 
-        const response = await fetch(`${API_URL}/users`, {
-            method: 'POST',
+    async function showUserData() {
+        const token = localStorage.getItem("jwt");
+
+        console.log("token -> " + token)
+
+        const response = await fetch(`${API_URL}/auth/me`, {
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({ username: newUserName, password: 'defaultPassword' })
         });
 
         const data = await response.json();

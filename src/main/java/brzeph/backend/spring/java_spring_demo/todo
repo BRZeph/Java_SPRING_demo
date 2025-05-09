@@ -5,7 +5,7 @@ TODO:
 1.1- create DTO for auth (check last lines of this class).
 2) continue with roles implementation.
 3) move this (authRequest and registerRequest) to dto package.
-4) implement user roles with spring security/auth.
+4) implement user roles with spring security/auth (then remove /auth/me from allowed hosts) CustomUserDetails.class.
 
 
 
@@ -16,3 +16,9 @@ TODO:
 
 3:
 1) move from H2 to mysql.
+
+
+
+4:
+1) implement debug/info/warn messages into the code.
+2) implement better exception handling (search the code for generic throws).

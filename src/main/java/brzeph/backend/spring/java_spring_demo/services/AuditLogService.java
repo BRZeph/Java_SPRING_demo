@@ -6,6 +6,8 @@ import brzeph.backend.spring.java_spring_demo.repositories.AuditLogRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -18,7 +20,9 @@ public class AuditLogService {
     }
 
     public void log(User user, String action, String metadata) {
-        AuditLog log = new AuditLog(user, action, Instant.now(), metadata);
+        ZonedDateTime zoned = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        Instant zonedInstant = zoned.toInstant();
+        AuditLog log = new AuditLog(user, action, zonedInstant, metadata);
         auditLogRepository.save(log);
     }
 
