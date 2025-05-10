@@ -2,7 +2,10 @@ package brzeph.backend.spring.java_spring_demo.entities.users;
 
 import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import jakarta.persistence.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,6 +20,9 @@ public class User implements Serializable {
     tb_users → Middle client (will manage the app)
     tb_clients → Final client (will access the app to buy/etc)
      */
+
+    private static final Logger logger = LoggerFactory.getLogger(User.class.getName());
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +54,13 @@ public class User implements Serializable {
     public User(Long id, String name, String email, String password, String phone, Role role) {
         this.id = id;
         this.name = name;
-        this.role = role;
+        if (role != null) {
+            this.role = role;
+            logger.debug("role={}", role);
+        } else {
+            logger.debug("role is null");
+            this.role = RoleSeed.EMPTY_ROLE.toRole();
+        }
         this.email = email;
         this.password = password;
         this.phone = phone;
@@ -59,8 +71,11 @@ public class User implements Serializable {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", role=" + role +
                 ", email='" + email + '\'' +
                 ", password='" + "[PROTECTED]" + '\'' +
+                ", phone='" + phone + '\'' +
+                ", orders=" + "[to see orders, user /api/orders/{id} end-point]" +
                 '}';
     }
 

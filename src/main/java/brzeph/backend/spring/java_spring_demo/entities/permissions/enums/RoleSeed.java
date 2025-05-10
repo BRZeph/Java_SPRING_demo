@@ -18,6 +18,12 @@ public enum RoleSeed {
             )),
             "Cliente"
     ),
+    EMPTY_ROLE(
+            buildSet(List.of(
+
+            )),
+            "Empty Role"
+    ),
     VENDOR(
             buildSet(List.of(
                     getOrderCRUD()//, getUserCRUD()

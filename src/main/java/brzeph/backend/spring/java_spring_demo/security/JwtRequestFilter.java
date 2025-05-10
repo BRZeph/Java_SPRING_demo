@@ -1,7 +1,6 @@
 package brzeph.backend.spring.java_spring_demo.security;
 
 import brzeph.backend.spring.java_spring_demo.services.CustomUserDetailsService;
-import brzeph.backend.spring.java_spring_demo.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain chain) {
+                                    FilterChain chain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -56,7 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
         }
-
+        chain.doFilter(request, response);
     }
 }
 
