@@ -1,11 +1,14 @@
 package brzeph.backend.spring.java_spring_demo.security;
 
+import brzeph.backend.spring.java_spring_demo.entities.permissions.Permission;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ApiKeyFilter extends OncePerRequestFilter {
@@ -35,20 +42,20 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             return;
         }
 
-        String apiKey = request.getHeader(API_KEY_HEADER);
-
 //        if (apiKey == null) { // Search in parameters if it is not in header.
 //            apiKey = request.getParameter(API_KEY_HEADER);
 //        }
 
-        if (validApiKey.equals(apiKey)) {
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(
-                            "postman",
-                            null,
-                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
-                    )
+        if (validApiKey.equals(request.getHeader(API_KEY_HEADER))) {
+            List<GrantedAuthority> authorities = RoleSeed.getAllPermissions().stream()
+                            .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                            .collect(Collectors.toList());
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    "POSTMAN",
+                    null,
+                    authorities
             );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);

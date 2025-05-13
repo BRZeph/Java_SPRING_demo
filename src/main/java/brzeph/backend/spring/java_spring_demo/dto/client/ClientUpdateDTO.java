@@ -1,29 +1,29 @@
-package brzeph.backend.spring.java_spring_demo.dto.user;
+package brzeph.backend.spring.java_spring_demo.dto.client;
 
-import brzeph.backend.spring.java_spring_demo.dto.role.RoleDTO;
 import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserUpdateDTO {
+public class ClientUpdateDTO {
 
     private Long id;
     private String name;
-    private RoleDTO roleUser;
+    private Role role;
     private String email;
     private String password;
     private String phone;
     private List<Order> orders = new ArrayList<>();
 
-    public UserUpdateDTO() {
+    public ClientUpdateDTO() {
     }
 
-    public UserUpdateDTO(Long id, String name, RoleDTO roleUser, String email, String password, String phone, List<Order> orders) {
+    public ClientUpdateDTO(Long id, String name, Role role, String email, String password, String phone, List<Order> orders) {
         this.id = id;
         this.name = name;
-        this.roleUser = roleUser;
+        this.role = role;
         this.email = email;
         this.password = password;
         this.phone = phone;
@@ -31,22 +31,9 @@ public class UserUpdateDTO {
     }
 
     @Override
-    public String toString() {
-        return "UserUpdateDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", role=" + roleUser +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", orders=" + orders +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        UserUpdateDTO that = (UserUpdateDTO) o;
+        ClientUpdateDTO that = (ClientUpdateDTO) o;
         return Objects.equals(id, that.id);
     }
 
@@ -71,15 +58,12 @@ public class UserUpdateDTO {
         this.name = name;
     }
 
-    public RoleDTO getRoleUser() {
-        if (roleUser == null) {
-            throw new RuntimeException("Replace this exception");
-        }
-        return roleUser;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleUser(RoleDTO roleUser) {
-        this.roleUser = roleUser;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getEmail() {

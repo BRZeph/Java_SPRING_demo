@@ -1,6 +1,7 @@
 package brzeph.backend.spring.java_spring_demo.services;
 
 import brzeph.backend.spring.java_spring_demo.entities.audit.AuditLog;
+import brzeph.backend.spring.java_spring_demo.entities.users.Client;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import brzeph.backend.spring.java_spring_demo.repositories.AuditLogRepository;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,20 @@ public class AuditLogService {
         ZonedDateTime zoned = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
         Instant zonedInstant = zoned.toInstant();
         AuditLog log = new AuditLog(user, action, zonedInstant, metadata);
+        auditLogRepository.save(log);
+    }
+
+    public void log(String user, String action, String metadata) {
+        ZonedDateTime zoned = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        Instant zonedInstant = zoned.toInstant();
+        AuditLog log = new AuditLog(user, action, zonedInstant, metadata);
+        auditLogRepository.save(log);
+    }
+
+    public void log(Client client, String action, String metadata) {
+        ZonedDateTime zoned = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        Instant zonedInstant = zoned.toInstant();
+        AuditLog log = new AuditLog(client, action, zonedInstant, metadata);
         auditLogRepository.save(log);
     }
 

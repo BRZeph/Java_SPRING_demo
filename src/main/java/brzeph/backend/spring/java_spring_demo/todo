@@ -1,24 +1,30 @@
 TODO:
-
-1 (AuthController.class):
-1) create AuthServices and refactor this class.
-1.1- create DTO for auth (check last lines of this class).
-2) continue with roles implementation.
-3) move this (authRequest and registerRequest) to dto package.
-4) implement user roles with spring security/auth (then remove /auth/me from allowed hosts) CustomUserDetails.class.
-
-
-
 2:
-1) update user dto to handle permissions.
-
-
-
-3:
-1) move from H2 to mysql.
-
+1) update client operations to allow for CRUD. Already implemented: CRD.
 
 
 4:
-1) implement debug/info/warn messages into the code.
+1) implement info/warn messages into the code. do not implement debug messages (Maybe?).
 2) implement better exception handling (search the code for generic throws).
+2.1) put a better response inside all findAll() end-points when no entries are found.
+
+
+5:
+1) update "new entities attributes.txt" for the changes of permissions/clients/users.
+2) update entity/dto attributes to the actual attributes they should have, currently the
+attributes are just [PLACEHOLDER]'s. Use "new entities attributes.txt" for reference.
+3) update orders entity/rep considering the new differentiation of User/Client.
+4) update DB architecture considering new changes.
+
+
+...6:
+1) create views (via transaction(?)).
+2) fix this warn:
+[restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer -
+Found 3 UserDetailsService beans, with names [clientService, customUserDetailsService, userService]. Global Authentication
+Manager will not use a UserDetailsService for username/password login. Consider publishing a single UserDetailsService bean.
+
+
+TO CONSIDER:
+1) consider creating an enum for ServerConfigService.
+2) consider creating an enum/constant.class for api paths.

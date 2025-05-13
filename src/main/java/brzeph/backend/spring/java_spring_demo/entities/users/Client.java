@@ -1,9 +1,13 @@
 package brzeph.backend.spring.java_spring_demo.entities.users;
 
+import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +18,7 @@ public class Client implements Serializable {
     tb_client → People who sign up to buy/sell
     */
     /*
-    role == RoleSeed.CLIENT;
+    permissions == RoleSeed.CLIENT;
      */
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,14 +30,16 @@ public class Client implements Serializable {
     private String email;
     private String password;
     private String phone;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role roleClient;
 
-//    @OneToMany(mappedBy = "client")
-//    private List<Order> orders = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<AuditLog> auditLogs = new ArrayList<>();
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Instant createdAt;
 
     public Client() {
+        this.roleClient = RoleSeed.CLIENT.toRole();
     }
 
     public Client(Long id, String name, String email, String password, String phone) {
@@ -42,6 +48,8 @@ public class Client implements Serializable {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.roleClient = RoleSeed.CLIENT.toRole();
+        this.createdAt = Instant.now();
     }
 
     @Override
@@ -106,4 +114,19 @@ public class Client implements Serializable {
         this.phone = phone;
     }
 
+    public Role getRole() {
+        return roleClient;
+    }
+
+    public void setRole(Role roleClient) {
+        this.roleClient = roleClient;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 }

@@ -1,6 +1,6 @@
 package brzeph.backend.spring.java_spring_demo.services;
 
-import brzeph.backend.spring.java_spring_demo.security.CustomUserDetails;
+import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import brzeph.backend.spring.java_spring_demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +24,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = repository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new CustomUserDetails(user);
     }
+
 }

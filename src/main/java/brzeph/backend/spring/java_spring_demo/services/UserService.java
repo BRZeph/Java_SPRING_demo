@@ -3,10 +3,12 @@ package brzeph.backend.spring.java_spring_demo.services;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import brzeph.backend.spring.java_spring_demo.mappers.UserMapper;
+import brzeph.backend.spring.java_spring_demo.repositories.RoleRepository;
 import brzeph.backend.spring.java_spring_demo.repositories.UserRepository;
-import brzeph.backend.spring.java_spring_demo.security.CustomUserDetails;
+import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
 import brzeph.backend.spring.java_spring_demo.services.exceptions.DatabaseException;
 import brzeph.backend.spring.java_spring_demo.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,12 +31,14 @@ public class UserService implements UserDetailsService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
 
+    private final RoleRepository roleRepository;
     private final UserRepository repository;
     private final UserMapper userMapper;
     private final AuditLogService auditLogService;
 
     @Autowired
-    public UserService(UserRepository repository, UserMapper userMapper, AuditLogService auditLogService) {
+    public UserService(RoleRepository roleRepository, UserRepository repository, UserMapper userMapper, AuditLogService auditLogService) {
+        this.roleRepository = roleRepository;
         this.repository = repository;
         this.userMapper = userMapper;
         this.auditLogService = auditLogService;
@@ -55,8 +59,12 @@ public class UserService implements UserDetailsService {
     public List<UserReadDTO> findAll() {
         logger.info("Find all users");
         List<User> users = repository.findAll();
+        for (User user : users) {
+            logger.info("user: {}", user.toString());
+            user.setRoleUser(roleRepository.findById(user.getRoleUser().getId()).orElseThrow(RuntimeException::new));
+        }
         return users.stream()
-                .map(userMapper::toReadDTO)  // Using UserReadDTO to exclude sensitive data
+                .map(userMapper::toReadDTO)
                 .collect(Collectors.toList());
     }
 
@@ -64,38 +72,24 @@ public class UserService implements UserDetailsService {
         logger.info("Find User by id: {}", id);
         User user = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
+        logger.info("User found: {}", user);
         return userMapper.toReadDTO(user);
     }
 
     public UserReadDTO insert(UserCreateDTO dto) {
-        logger.info("Insert User: {}", dto);
         User entity = userMapper.fromCreateDTO(dto);
+        entity.setRoleUser(RoleSeed.getRoleByName(dto.getRoleUser().getName()).toRole());
         User saved = repository.save(entity);
 
-        // Extract acting user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails customUserDetails) {
-            User actingUser = customUserDetails.getUser();
-
-            auditLogService.log(
-                    actingUser,
-                    "CREATE_USER",
-                    "User with id " + saved.getId() + " was created"
-            );
-        } else {
-            logger.warn("No authenticated user found when trying to log action, using dummy instead.");
-            auditLogService.log(
-                    null,
-                    "CREATE_USER",
-                    "User with id " + saved.getId() + " was created"
-            );
-        }
+        logger.info("User saved: {}", saved.getId());
+        validateAndLog(saved.getId(), "CREATE_USER", " was created");
 
         return userMapper.toReadDTO(saved);
     }
 
     public void delete(Long id) {
         logger.info("Delete User by id: {}", id);
+        validateAndLog(id, "DELETE_USER", " was deleted");
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException(id);
         }
@@ -108,30 +102,30 @@ public class UserService implements UserDetailsService {
 
     public UserReadDTO update(Long id, UserUpdateDTO dto) {
         logger.info("Update User by id: {}", id);
+        validateAndLog(id, "UPDATE_USER", " was updated");
         try {
             User entity = repository.getReferenceById(id);
-            updateData(entity, dto);
+            entity.setRoleUser(RoleSeed.getRoleByName(dto.getRoleUser().getName()).toRole());
             User updated = repository.save(entity);
             return userMapper.toReadDTO(updated);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
+        } catch (RuntimeException e){
+            throw new ResourceNotFoundException(dto.getRoleUser().getName());
         }
     }
 
-    private void updateData(User entity, UserUpdateDTO dto) {
-        if (dto.getName() != null) {
-            entity.setName(dto.getName());
-        }
-        if (dto.getEmail() != null) {
-            entity.setEmail(dto.getEmail());
-        }
-        if (dto.getPhone() != null) {
-            entity.setPhone(dto.getPhone());
-        }
-        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-            entity.setPassword(dto.getPassword());
+    private void validateAndLog(Long id, String action, String suffix) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = (auth != null) ? auth.getPrincipal() : null;
+
+        if (principal instanceof CustomUserDetails customUserDetails) {
+            auditLogService.log(customUserDetails.getUser(), action, "User with id " + id + suffix);
+        } else {
+            auditLogService.log(principal.toString(), action, "User with id " + id + suffix);
         }
     }
+
 
     public UserMapper getUserMapper() {
         return userMapper;

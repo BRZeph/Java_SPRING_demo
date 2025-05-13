@@ -1,36 +1,29 @@
-package brzeph.backend.spring.java_spring_demo.entities.permissions;
+package brzeph.backend.spring.java_spring_demo.dto.role;
 
-import jakarta.persistence.*;
-
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "tb_permissions")
-public class Permission implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class RoleDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true)
+    private int id;
     private String name;
     private String description;
 
-    public Permission() {
+    public RoleDTO() {
     }
 
-    public Permission(Long id, String name, String description) {
+    public RoleDTO(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
+    public RoleDTO(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "Permission{" +
+        return "RoleDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -39,21 +32,22 @@ public class Permission implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Permission that = (Permission) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
+        RoleDTO roleDTO = (RoleDTO) o;
+        return id == roleDTO.id && Objects.equals(name, roleDTO.name) && Objects.equals(description, roleDTO.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, name, description);
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,8 +1,12 @@
 package brzeph.backend.spring.java_spring_demo.controllers;
 
+import brzeph.backend.spring.java_spring_demo.dto.client.ClientCreateDTO;
+import brzeph.backend.spring.java_spring_demo.dto.client.ClientReadDTO;
+import brzeph.backend.spring.java_spring_demo.dto.client.ClientUpdateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
+import brzeph.backend.spring.java_spring_demo.services.ClientService;
 import brzeph.backend.spring.java_spring_demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,35 +19,35 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/users")
-public class UserController {
+@RequestMapping(value = "/api/clients")
+public class ClientController {
 
-    private final UserService service;
+    private final ClientService service;
 
     @Autowired
-    public UserController(UserService service) {
+    public ClientController(ClientService service) {
         this.service = service;
     }
 
 
-    @PreAuthorize("hasAuthority('READ_USER')")
+    @PreAuthorize("hasAuthority('READ_CLIENT')")
     @GetMapping
-    public ResponseEntity<List<UserReadDTO>> findAll() {
-        List<UserReadDTO> users = service.findAll();
+    public ResponseEntity<List<ClientReadDTO>> findAll() {
+        List<ClientReadDTO> users = service.findAll();
         return ResponseEntity.ok().body(users);
     }
 
-    @PreAuthorize("hasAuthority('READ_USER')")
+    @PreAuthorize("hasAuthority('READ_CLIENT')")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserReadDTO> findById(@PathVariable Long id) {
-        UserReadDTO dto = service.findById(id);
+    public ResponseEntity<ClientReadDTO> findById(@PathVariable Long id) {
+        ClientReadDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
-    @PreAuthorize("hasAuthority('CREATE_USER')")
+    @PreAuthorize("hasAuthority('CREATE_CLIENT')")
     @PostMapping
-    public ResponseEntity<UserReadDTO> insert(@RequestBody @Validated UserCreateDTO dto) {
-        UserReadDTO savedUser = service.insert(dto);
+    public ResponseEntity<ClientReadDTO> insert(@RequestBody @Validated ClientCreateDTO dto) {
+        ClientReadDTO savedUser = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId())
@@ -51,17 +55,17 @@ public class UserController {
         return ResponseEntity.created(uri).body(savedUser);
     }
 
-    @PreAuthorize("hasAuthority('DELETE_USER')")
+    @PreAuthorize("hasAuthority('DELETE_CLIENT')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAuthority('UPDATE_USER')")
+    @PreAuthorize("hasAuthority('UPDATE_CLIENT')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserReadDTO> update(@PathVariable Long id, @RequestBody @Validated UserUpdateDTO dto) {
-        UserReadDTO updatedUser = service.update(id, dto);
+    public ResponseEntity<ClientReadDTO> update(@PathVariable Long id, @RequestBody @Validated ClientUpdateDTO dto) {
+        ClientReadDTO updatedUser = service.update(id, dto);
         return ResponseEntity.ok().body(updatedUser);
     }
 }

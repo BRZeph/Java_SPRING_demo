@@ -4,12 +4,9 @@ import brzeph.backend.spring.java_spring_demo.dto.user.UserCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = RoleMapper.class)
 public interface UserMapper {
 
     // --------- Create ---------
@@ -17,6 +14,7 @@ public interface UserMapper {
     UserCreateDTO toCreateDTO(User user);
 
     // --------- Read ---------
+    @Mapping(source = "roleUser", target = "roleUser")
     UserReadDTO toReadDTO(User user);
 
     // --------- Update ---------

@@ -3,10 +3,11 @@ package brzeph.backend.spring.java_spring_demo.services;
 import brzeph.backend.spring.java_spring_demo.controllers.AuthController;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import brzeph.backend.spring.java_spring_demo.repositories.UserRepository;
-import brzeph.backend.spring.java_spring_demo.security.CustomUserDetails;
+import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
 import brzeph.backend.spring.java_spring_demo.security.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,19 +17,18 @@ import java.util.Optional;
 @Service
 public class AuthService {
 
-    private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class.getName());
+
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager,
-                       UserRepository userRepository,
+    public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtUtil jwtUtil,
                        UserService userService) {
-        this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -48,6 +48,7 @@ public class AuthService {
 
     public String register(AuthController.RegisterRequest request) {
         if (userRepository.findByName(request.getUsername()).isPresent()) {
+            logger.info("Username is already in use: {}", request.getUsername());
             throw new IllegalArgumentException("Username already taken");
         }
 

@@ -1,12 +1,13 @@
 package brzeph.backend.spring.java_spring_demo.entities.permissions;
 
+import brzeph.backend.spring.java_spring_demo.entities.users.Client;
+import brzeph.backend.spring.java_spring_demo.entities.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_role")
@@ -29,6 +30,15 @@ public class Role implements Serializable {
     )
     private Set<Permission> permissions = new HashSet<>();
 
+//    @OneToMany(mappedBy = "permissions")
+//    private List<Client> clients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "roleClient")
+    private List<Client> clients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "roleUser")
+    private List<User> users = new ArrayList<>();
+
     public Role() {
     }
 
@@ -37,6 +47,22 @@ public class Role implements Serializable {
         this.name = name;
         this.description = description;
         this.permissions = permissions;
+    }
+
+    public Role(String name){
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", permissions=" + permissions +
+//                ", clients=" + clients +
+//                ", users=" + users +
+                '}';
     }
 
     @Override

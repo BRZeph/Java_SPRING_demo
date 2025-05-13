@@ -1,11 +1,12 @@
 package brzeph.backend.spring.java_spring_demo.controllers;
 
-import brzeph.backend.spring.java_spring_demo.security.CustomUserDetails;
+import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
 import brzeph.backend.spring.java_spring_demo.services.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +40,13 @@ public class AuthController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_SELF')")
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null){
+            logger.debug("User not found");
+            throw new RuntimeException("NULL USER. Replace this later");
+        }
         logger.info("Current user: {}", userDetails.getUser().getId());
         logger.debug("Current user: {}", userDetails);
         return authService.getCurrentUser(userDetails)
@@ -48,7 +54,6 @@ public class AuthController {
                 .orElseGet(() -> ResponseEntity.status(401).body("Unauthorized"));
     }
 
-    // TODO: move this to dto package.
     public static class AuthRequest {
         private String username;
         private String password;
@@ -71,15 +76,6 @@ public class AuthController {
         public void setPassword(String password) { this.password = password; }
     }
 
-    public static class AuthResponse {
-        private final String jwt;
-
-        public AuthResponse(String jwt) {
-            this.jwt = jwt;
-        }
-
-        public String getJwt() {
-            return jwt;
-        }
+    public record AuthResponse(String jwt) {
     }
 }

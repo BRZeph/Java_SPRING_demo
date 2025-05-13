@@ -4,11 +4,13 @@ import brzeph.backend.spring.java_spring_demo.entities.orders.Order;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,38 +34,34 @@ public class User implements Serializable {
     private String name;
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role role;
+    private Role roleUser;
     private String email;
     private String password;
     private String phone;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Instant createdAt;
+
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public User(){
+        this.roleUser = RoleSeed.EMPTY_ROLE.toRole();
     }
 
-    public User(Long id, String name, String email, String password, String phone, Role role) {
+    public User(Long id, String name, Role roleUser, String email, String password, String phone) {
         this.id = id;
         this.name = name;
-        if (role != null) {
-            this.role = role;
-            logger.debug("role={}", role);
+        if (roleUser != null) {
+            this.roleUser = roleUser;
         } else {
-            logger.debug("role is null");
-            this.role = RoleSeed.EMPTY_ROLE.toRole();
+            this.roleUser = RoleSeed.EMPTY_ROLE.toRole();
         }
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.createdAt = Instant.now();
     }
 
     @Override
@@ -71,7 +69,7 @@ public class User implements Serializable {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", role=" + role +
+                ", role=" + roleUser +
                 ", email='" + email + '\'' +
                 ", password='" + "[PROTECTED]" + '\'' +
                 ", phone='" + phone + '\'' +
@@ -89,6 +87,14 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, email, password);
+    }
+
+    public Role getRoleUser() {
+        return roleUser;
+    }
+
+    public void setRoleUser(Role roleUser) {
+        this.roleUser = roleUser;
     }
 
     public Long getId() {
@@ -133,5 +139,13 @@ public class User implements Serializable {
 
     public List<Order> getOrders() {
         return orders;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 }

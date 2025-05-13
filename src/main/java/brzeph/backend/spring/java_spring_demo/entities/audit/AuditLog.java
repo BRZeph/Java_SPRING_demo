@@ -37,6 +37,14 @@ public class AuditLog implements Serializable {
     public AuditLog() {
     }
 
+    public AuditLog(String user, String action, Instant timestamp, String metadata) { // For postman etc.
+        this.userType = user;
+        this.userId = -1l;
+        this.action = action;
+        this.timestamp = timestamp;
+        this.metadata = metadata;
+    }
+
     public AuditLog(User user, String action, Instant timestamp, String metadata) {
         this.userType = "USER";
         this.userId = Objects.isNull(user) ? Long.valueOf(-1) : user.getId();
@@ -47,7 +55,7 @@ public class AuditLog implements Serializable {
 
     public AuditLog(Client client, String action, Instant timestamp, String metadata) {
         this.userType = "CLIENT";
-        this.userId = client.getId();
+        this.userId = Objects.isNull(client) ? Long.valueOf(-1) : client.getId();
         this.action = action;
         this.timestamp = timestamp;
         this.metadata = metadata;
