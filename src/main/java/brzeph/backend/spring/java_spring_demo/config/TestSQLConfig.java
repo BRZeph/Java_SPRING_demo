@@ -1,12 +1,13 @@
 package brzeph.backend.spring.java_spring_demo.config;
 
-import brzeph.backend.spring.java_spring_demo.controllers.AuthController;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.Permission;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.PermissionSeed;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import brzeph.backend.spring.java_spring_demo.entities.serverConfig.ServerConfig;
-import brzeph.backend.spring.java_spring_demo.repositories.*;
+import brzeph.backend.spring.java_spring_demo.repositories.PermissionRepository;
+import brzeph.backend.spring.java_spring_demo.repositories.RoleRepository;
+import brzeph.backend.spring.java_spring_demo.repositories.ServerConfigRepository;
 import brzeph.backend.spring.java_spring_demo.services.SeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +16,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static brzeph.backend.spring.java_spring_demo.entities.serverConfig.ServerConfigEnum.*;
+import static brzeph.backend.spring.java_spring_demo.entities.serverConfig.ServerConfigEnum.POSITIVE;
+import static brzeph.backend.spring.java_spring_demo.entities.serverConfig.ServerConfigEnum.SEEDED_DB;
 
 @Configuration
 @Profile("testSQL")

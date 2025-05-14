@@ -1,6 +1,7 @@
 TODO:
 2:
 1) update client operations to allow for CRUD. Already implemented: CRD.
+2) update /register and /login methods.
 
 
 4:
@@ -15,6 +16,9 @@ TODO:
 attributes are just [PLACEHOLDER]'s. Use "new entities attributes.txt" for reference.
 3) update orders entity/rep considering the new differentiation of User/Client.
 4) update DB architecture considering new changes.
+
+6:
+1) implement validations for CRUD (such as create with a password longer than 6 digits etc).
 
 
 ...6:

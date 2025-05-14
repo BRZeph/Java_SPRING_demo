@@ -1,6 +1,5 @@
 package brzeph.backend.spring.java_spring_demo.security;
 
-import brzeph.backend.spring.java_spring_demo.entities.permissions.Permission;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,10 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -41,10 +37,6 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-//        if (apiKey == null) { // Search in parameters if it is not in header.
-//            apiKey = request.getParameter(API_KEY_HEADER);
-//        }
 
         if (validApiKey.equals(request.getHeader(API_KEY_HEADER))) {
             List<GrantedAuthority> authorities = RoleSeed.getAllPermissions().stream()

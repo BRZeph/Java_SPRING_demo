@@ -54,11 +54,14 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Client{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + "[PROTECTED]" + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", roleClient=" + roleClient +
+                ", createdAt=" + createdAt +
                 '}';
     }
 

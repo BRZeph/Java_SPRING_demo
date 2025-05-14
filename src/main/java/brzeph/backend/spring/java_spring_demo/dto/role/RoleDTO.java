@@ -1,10 +1,13 @@
 package brzeph.backend.spring.java_spring_demo.dto.role;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Objects;
 
 public class RoleDTO {
 
     private int id;
+    @NotBlank(message = "Role must be filled")
     private String name;
     private String description;
 

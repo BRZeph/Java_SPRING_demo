@@ -3,11 +3,9 @@ package brzeph.backend.spring.java_spring_demo.controllers;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientUpdateDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserCreateDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserReadDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
 import brzeph.backend.spring.java_spring_demo.services.ClientService;
-import brzeph.backend.spring.java_spring_demo.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +21,8 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService service;
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientController.class.getName());
 
     @Autowired
     public ClientController(ClientService service) {
@@ -65,6 +65,7 @@ public class ClientController {
     @PreAuthorize("hasAuthority('UPDATE_CLIENT')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientReadDTO> update(@PathVariable Long id, @RequestBody @Validated ClientUpdateDTO dto) {
+        logger.debug("dto: {}", dto.toString());
         ClientReadDTO updatedUser = service.update(id, dto);
         return ResponseEntity.ok().body(updatedUser);
     }

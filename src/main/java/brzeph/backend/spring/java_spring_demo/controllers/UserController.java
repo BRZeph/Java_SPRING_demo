@@ -4,6 +4,7 @@ import brzeph.backend.spring.java_spring_demo.dto.user.UserCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
 import brzeph.backend.spring.java_spring_demo.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,7 +43,8 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('CREATE_USER')")
     @PostMapping
-    public ResponseEntity<UserReadDTO> insert(@RequestBody @Validated UserCreateDTO dto) {
+//    public ResponseEntity<UserReadDTO> insert(@RequestBody @Validated UserCreateDTO dto) {
+    public ResponseEntity<UserReadDTO> insert(@RequestBody @Valid UserCreateDTO dto) {
         UserReadDTO savedUser = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

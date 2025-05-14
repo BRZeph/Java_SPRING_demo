@@ -1,5 +1,6 @@
 package brzeph.backend.spring.java_spring_demo.controllers;
 
+import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
 import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
 import brzeph.backend.spring.java_spring_demo.services.AuthService;
 import org.slf4j.Logger;
@@ -48,7 +49,6 @@ public class AuthController {
             throw new RuntimeException("NULL USER. Replace this later");
         }
         logger.info("Current user: {}", userDetails.getUser().getId());
-        logger.debug("Current user: {}", userDetails);
         return authService.getCurrentUser(userDetails)
                 .<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(401).body("Unauthorized"));
@@ -67,13 +67,61 @@ public class AuthController {
 
     public static class RegisterRequest {
         private String username;
+        private Role roleUser;
+        private String email;
         private String password;
+        private String phone;
 
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
+        public Role getRoleUser() {
+            return roleUser;
+        }
 
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
+        public void setRoleUser(Role roleUser) {
+            this.roleUser = roleUser;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        @Override
+        public String toString() {
+            return "RegisterRequest{" +
+                    "username='" + username + '\'' +
+                    ", roleUser=" + roleUser.getName() +
+                    ", email='" + email + '\'' +
+                    ", password='" + password + '\'' +
+                    ", phone='" + phone + '\'' +
+                    '}';
+        }
     }
 
     public record AuthResponse(String jwt) {

@@ -3,21 +3,21 @@ package brzeph.backend.spring.java_spring_demo.services;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientUpdateDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
 import brzeph.backend.spring.java_spring_demo.entities.users.Client;
 import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomClientDetails;
 import brzeph.backend.spring.java_spring_demo.mappers.ClientMapper;
 import brzeph.backend.spring.java_spring_demo.repositories.ClientRepository;
-import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
 import brzeph.backend.spring.java_spring_demo.services.exceptions.DatabaseException;
 import brzeph.backend.spring.java_spring_demo.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,7 +37,7 @@ public class ClientService implements UserDetailsService {
     private final AuditLogService auditLogService;
 
     @Autowired
-    public ClientService(ClientRepository repository, ClientMapper mapper, AuditLogService auditLogService) {
+    public ClientService(ClientRepository repository, @Qualifier("clientMapperImpl") ClientMapper mapper, AuditLogService auditLogService) {
         this.repository = repository;
         this.mapper = mapper;
         this.auditLogService = auditLogService;
@@ -48,7 +48,7 @@ public class ClientService implements UserDetailsService {
         Client user = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new org.springframework.security.core.userdetails.User(
+        return new User(
                 user.getEmail(),
                 user.getPassword(),
                 new ArrayList<>()
@@ -121,6 +121,8 @@ public class ClientService implements UserDetailsService {
     }
 
     private void updateData(Client entity, ClientUpdateDTO dto) {
+        logger.debug("entity: {}", entity);
+        logger.debug("dto: {}", dto);
         if (dto.getName() != null) {
             entity.setName(dto.getName());
         }

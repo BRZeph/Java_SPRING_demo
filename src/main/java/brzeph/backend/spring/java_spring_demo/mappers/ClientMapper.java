@@ -3,14 +3,13 @@ package brzeph.backend.spring.java_spring_demo.mappers;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientCreateDTO;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientReadDTO;
 import brzeph.backend.spring.java_spring_demo.dto.client.ClientUpdateDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserCreateDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserReadDTO;
-import brzeph.backend.spring.java_spring_demo.dto.user.UserUpdateDTO;
 import brzeph.backend.spring.java_spring_demo.entities.users.Client;
-import brzeph.backend.spring.java_spring_demo.entities.users.User;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = RoleMapper.class)
 public interface ClientMapper {
 
     // --------- Create ---------

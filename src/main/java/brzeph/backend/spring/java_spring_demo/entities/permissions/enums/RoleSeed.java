@@ -2,7 +2,6 @@ package brzeph.backend.spring.java_spring_demo.entities.permissions.enums;
 
 import brzeph.backend.spring.java_spring_demo.entities.permissions.Permission;
 import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
-import brzeph.backend.spring.java_spring_demo.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,6 +92,7 @@ public enum RoleSeed {
     public static void persist(List<Role> roles){
         if (roles.isEmpty()) return;
         int i = -1;
+        persistedRole.clear();
         for(RoleSeed seed : RoleSeed.values()){
             i++;
             if (persistedRole.containsKey(seed)) continue;

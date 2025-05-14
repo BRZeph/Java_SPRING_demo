@@ -60,7 +60,6 @@ public class UserService implements UserDetailsService {
         logger.info("Find all users");
         List<User> users = repository.findAll();
         for (User user : users) {
-            logger.info("user: {}", user.toString());
             user.setRoleUser(roleRepository.findById(user.getRoleUser().getId()).orElseThrow(RuntimeException::new));
         }
         return users.stream()
@@ -72,7 +71,6 @@ public class UserService implements UserDetailsService {
         logger.info("Find User by id: {}", id);
         User user = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
-        logger.info("User found: {}", user);
         return userMapper.toReadDTO(user);
     }
 

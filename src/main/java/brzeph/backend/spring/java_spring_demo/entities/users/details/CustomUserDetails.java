@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return RoleSeed.values()[Math.toIntExact(user.getRoleUser().getId())].getPermissions().stream()
+        return RoleSeed.values()[Math.toIntExact(user.getRoleUser().getId() - 1)].getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                 .collect(Collectors.toSet());
     }

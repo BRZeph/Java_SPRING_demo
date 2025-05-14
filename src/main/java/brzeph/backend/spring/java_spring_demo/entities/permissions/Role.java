@@ -2,7 +2,6 @@ package brzeph.backend.spring.java_spring_demo.entities.permissions;
 
 import brzeph.backend.spring.java_spring_demo.entities.users.Client;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -59,7 +58,6 @@ public class Role implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", permissions=" + permissions +
 //                ", clients=" + clients +
 //                ", users=" + users +
                 '}';

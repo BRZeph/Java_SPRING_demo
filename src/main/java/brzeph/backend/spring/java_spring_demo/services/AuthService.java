@@ -1,6 +1,7 @@
 package brzeph.backend.spring.java_spring_demo.services;
 
 import brzeph.backend.spring.java_spring_demo.controllers.AuthController;
+import brzeph.backend.spring.java_spring_demo.entities.permissions.enums.RoleSeed;
 import brzeph.backend.spring.java_spring_demo.entities.users.User;
 import brzeph.backend.spring.java_spring_demo.repositories.UserRepository;
 import brzeph.backend.spring.java_spring_demo.entities.users.details.CustomUserDetails;
@@ -52,9 +53,19 @@ public class AuthService {
             throw new IllegalArgumentException("Username already taken");
         }
 
-        User user = new User();
-        user.setName(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getRoleUser() == null) {
+            request.setRoleUser(RoleSeed.EMPTY_ROLE.toRole());
+        }
+
+        User user = new User(
+                null,
+                request.getUsername(),
+                RoleSeed.getRoleByName(request.getRoleUser().getName()).toRole(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getPhone()
+        );
+
         userService.insert(userService.getUserMapper().toCreateDTO(user));
         return "User registered successfully";
     }

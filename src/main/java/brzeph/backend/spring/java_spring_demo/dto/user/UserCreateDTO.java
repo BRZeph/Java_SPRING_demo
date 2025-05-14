@@ -1,11 +1,12 @@
 package brzeph.backend.spring.java_spring_demo.dto.user;
 
 import brzeph.backend.spring.java_spring_demo.dto.role.RoleDTO;
-import brzeph.backend.spring.java_spring_demo.entities.permissions.Role;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ public class UserCreateDTO implements Serializable {
     @NotBlank(message = "Name cannot be blank.")
     private String name;
 
+    @Valid
     @NotNull(message = "Role must be specified.")
     private RoleDTO roleUser;
 

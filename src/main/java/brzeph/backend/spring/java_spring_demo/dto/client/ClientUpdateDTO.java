@@ -31,6 +31,19 @@ public class ClientUpdateDTO {
     }
 
     @Override
+    public String toString() {
+        return "ClientUpdateDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", orders=" + orders +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ClientUpdateDTO that = (ClientUpdateDTO) o;
